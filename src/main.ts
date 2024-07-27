@@ -32,6 +32,7 @@ async function bootstrap() {
     .addTag('auth', '인증 관련')
     .addTag('user', '유저 관련')
     .addTag('walk', '산책 관련')
+    .addTag('chat', '댕댕닥터 관련 관련')
     .build();
 
   const document = SwaggerModule.createDocument(app, config, { ignoreGlobalPrefix: true });
