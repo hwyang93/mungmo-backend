@@ -10,7 +10,7 @@ export class Pet extends BaseEntity {
   @Column({ type: 'varchar', length: 50, name: 'breed', comment: '견종' })
   breed: string;
 
-  @Column({ type: 'int', name: 'weight', comment: '무게' })
+  @Column({ type: 'double', name: 'weight', comment: '무게' })
   weight: number;
 
   @Column({ type: 'int', name: 'birth', comment: '출생년도' })

@@ -38,8 +38,8 @@ export class WalkService {
       .createQueryBuilder('walkHistory')
       .update()
       .set({ endedAt: dayjs(new Date()).format('YYYY-MM-DD HH:mm:ss'), status: 'PAUSE_END' })
-      .where('walkHistory.parentSeq = :seq', { seq })
-      .andWhere('walkHistory.status = "PAUSE"')
+      .where({ seq })
+      .andWhere({ status: 'PAUSE' })
       .execute();
     await this.walkHistoryRepository
       .createQueryBuilder('walkHistory')

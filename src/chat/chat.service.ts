@@ -49,12 +49,7 @@ export class ChatService {
 
       const diffDate = dayjs(new Date()).diff(lastChat.createdAt, 'minute', true);
       if (diffDate >= 30) {
-        await this.chatRoomRepository
-          .createQueryBuilder('chatRoom')
-          .update()
-          .set({ status: 'CLOSED' })
-          .where('chatRoom.seq = :seq', { seq: openChatRoom.seq })
-          .execute();
+        await this.chatRoomRepository.createQueryBuilder('chatRoom').update().set({ status: 'CLOSED' }).where({ seq: openChatRoom.seq }).execute();
         return null;
       }
     }
