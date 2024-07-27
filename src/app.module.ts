@@ -8,6 +8,7 @@ import { LoggerMiddleware } from './common/middleweres/logger.middleware';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { WalkModule } from './walk/walk.module';
+import { ChatModule } from './chat/chat.module';
 
 @Module({
   imports: [
@@ -28,7 +29,8 @@ import { WalkModule } from './walk/walk.module';
     }),
     AuthModule,
     UserModule,
-    WalkModule
+    WalkModule,
+    ChatModule
   ],
   controllers: [AppController],
   providers: [AppService]

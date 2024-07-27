@@ -7,6 +7,8 @@ import { JwtAuthGuard } from './jwt-auth.guard';
 import { LoginDto } from './dto/login.dto';
 import { getKakaoUserInfo } from '../common/api/kakao';
 import { UserService } from '../user/user.service';
+import { UserDecorator } from '../common/decorators/user.decorator';
+import { User } from '../entites/User';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -40,19 +42,19 @@ export class AuthController {
     return this.authService.login(userInfo);
   }
 
-  // @ApiOperation({ summary: '토큰 재발급' })
-  // @ApiBearerAuth()
-  // @Post('refresh')
-  // async refresh(@Req() req, @MemberDecorator() member: Member) {
-  //   let token;
-  //   if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
-  //     token = req.headers.authorization.split(' ')[1];
-  //   } else {
-  //     throw new UnauthorizedException('토큰이 없습니다.');
-  //   }
-  //
-  //   return this.authService.refresh(token, member);
-  // }
+  @ApiOperation({ summary: '토큰 재발급' })
+  @ApiBearerAuth()
+  @Post('refresh')
+  async refresh(@Req() req, @UserDecorator() user: User) {
+    let token;
+    if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
+      token = req.headers.authorization.split(' ')[1];
+    } else {
+      throw new UnauthorizedException('토큰이 없습니다.');
+    }
+
+    return this.authService.refresh(token, user);
+  }
 
   // @Get('login/kakao')
   // @UseGuards(AuthGuard('kakao'))

@@ -7,9 +7,8 @@ import { JwtService } from '@nestjs/jwt';
 import { Cache } from 'cache-manager';
 
 import dayjs from 'dayjs';
-
-import { CheckAuthNumberDto } from './dto/check-auth-number.dto';
-import { FindEmailDto } from './dto/find-email.dto';
+import { User } from '../entites/User';
+import { UserService } from '../user/user.service';
 
 const bcrypt = require('bcrypt');
 
@@ -17,7 +16,7 @@ const bcrypt = require('bcrypt');
 export class AuthService {
   constructor(
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
-
+    @InjectRepository(User) private userRepository: Repository<User>,
     private jwtService: JwtService
   ) {}
 
@@ -49,24 +48,24 @@ export class AuthService {
     return { accessToken, refreshToken };
   }
   //
-  // async refresh(token: string, member: Member) {
-  //   const cachedRefreshToken = (await this.cacheManager.get(member.email))?.toString();
-  //
-  //   let decodedToken;
-  //   try {
-  //     decodedToken = this.jwtService.verify(cachedRefreshToken, { secret: process.env.JWT_PUBLIC_KEY });
-  //   } catch (e) {
-  //     throw new UnauthorizedException('만료된 리프레시 토큰입니다.');
-  //   }
-  //   const memberInfo = await this.memberRepository.findOne({
-  //     where: { seq: decodedToken.seq },
-  //     select: ['seq', 'email']
-  //   });
-  //   const payload = { seq: memberInfo.seq, email: member.email };
-  //   return {
-  //     accessToken: this.jwtService.sign(payload, { expiresIn: '1m', secret: process.env.JWT_PRIVATE_KEY })
-  //   };
-  // }
+  async refresh(token: string, user: User) {
+    const cachedRefreshToken = (await this.cacheManager.get(user.email))?.toString();
+
+    let decodedToken;
+    try {
+      decodedToken = this.jwtService.verify(cachedRefreshToken, { secret: process.env.JWT_PUBLIC_KEY });
+    } catch (e) {
+      throw new UnauthorizedException('만료된 리프레시 토큰입니다.');
+    }
+    const userInfo = await this.userRepository.findOne({
+      where: { seq: decodedToken.seq },
+      select: ['seq', 'email']
+    });
+    const payload = { seq: userInfo.seq, email: userInfo.email };
+    return {
+      accessToken: this.jwtService.sign(payload, { expiresIn: '1m', secret: process.env.JWT_PRIVATE_KEY })
+    };
+  }
   //
   // async OAuthLogin({ req, res }) {
   //   console.log('req::::::');

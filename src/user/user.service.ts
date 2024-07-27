@@ -5,7 +5,6 @@ import { DataSource, Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { Pet } from '../entites/Pet';
 import { UpdatePetDto } from './dto/update-pet.dto';
-import { UserDecorator } from '../common/decorators/user.decorator';
 
 @Injectable()
 export class UserService {
@@ -58,5 +57,9 @@ export class UserService {
     const pet = updatePetDto.toEntity();
     await this.petRepository.save(pet);
     return { seq: pet.seq };
+  }
+
+  async getPetInfo(userSeq: number) {
+    return await this.petRepository.createQueryBuilder('pet').where('pet.userSeq = :userSeq', { userSeq }).getOne();
   }
 }

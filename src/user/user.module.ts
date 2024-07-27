@@ -8,6 +8,7 @@ import { Pet } from '../entites/Pet';
 @Module({
   imports: [TypeOrmModule.forFeature([User, Pet])],
   controllers: [UserController],
+  exports: [UserService],
   providers: [UserService]
 })
 export class UserModule {}

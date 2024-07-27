@@ -5,11 +5,11 @@ export class BaseEntity {
   seq: number;
 
   @CreateDateColumn({ type: 'datetime', name: 'created_at' })
-  createdAt: Timestamp;
+  createdAt: Date;
 
   @Column({ type: 'datetime', name: 'updated_at', default: () => 'CURRENT_TIMESTAMP' })
-  updatedAt: Timestamp;
+  updatedAt: Date;
 
   @DeleteDateColumn({ type: 'datetime', name: 'deleted_at', select: false })
-  deletedAt: Timestamp;
+  deletedAt: Date;
 }
