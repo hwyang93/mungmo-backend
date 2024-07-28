@@ -20,7 +20,7 @@ export class UserController {
       socialInfo = await getKakaoUserInfo(createUserDto.token);
       console.log(socialInfo);
       if (!socialInfo) {
-        throw new UnauthorizedException('유호하지 않는 토큰 입니다.');
+        throw new UnauthorizedException('유효하지 않는 토큰 입니다.');
       }
     }
 
