@@ -13,8 +13,8 @@ export class Pet extends BaseEntity {
   @Column({ type: 'double', name: 'weight', comment: '무게' })
   weight: number;
 
-  @Column({ type: 'int', name: 'birth', comment: '출생년도' })
-  birth: number;
+  @Column({ type: 'varchar', name: 'birth', comment: '출생년도' })
+  birth: string;
 
   @Column({ type: 'varchar', length: 2000, name: 'etc', comment: '기타정보' })
   etc: string;

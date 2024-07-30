@@ -12,7 +12,7 @@ export class CreatePetDto {
   weight: number;
 
   @ApiProperty({ description: '출생연도' })
-  birth: number;
+  birth: string;
 
   @ApiProperty({ description: '기타 특이사항' })
   etc: string;
