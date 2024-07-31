@@ -130,7 +130,7 @@ export class WalkService {
         walkingGoal: petInfo.walkingGoal
       },
       todayWalkTime: walkTime > 0 ? parseInt(String(walkTime / 60)) + ':' + (walkTime % 60) : '00:00',
-      round: todayWalkHistory.length == 0 ? '1회차' : todayWalkHistory[0].status != 'END' ? todayWalkHistory.length : todayWalkHistory.length + 1
+      round: todayWalkHistory.length == 0 ? 1 : todayWalkHistory[0].status != 'END' ? todayWalkHistory.length : todayWalkHistory.length + 1
     };
   }
 
