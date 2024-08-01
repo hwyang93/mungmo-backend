@@ -20,15 +20,18 @@ export class ChatController {
     let petInfo;
 
     if (!!user) {
+      let message;
       petInfo = await this.userService.getPetInfo(user.seq);
       if (!!petInfo) {
-        sendChatDto.message = messageCombinePetInfo(sendChatDto.message, petInfo);
+        message = messageCombinePetInfo(sendChatDto.message, petInfo);
       }
       if (!sendChatDto.chatRoomSeq) {
         const newChatRoom = await this.chatService.createChatRoom(user);
         sendChatDto.chatRoomSeq = newChatRoom.seq;
       }
-      const savedChat = await this.chatService.createChat(sendChatDto, user);
+      const answer = await getClovaAnswer(message);
+
+      const savedChat = await this.chatService.createChat(sendChatDto, user, answer);
 
       return { chatRoomSeq: sendChatDto.chatRoomSeq, answer: savedChat.answer };
     }

@@ -16,8 +16,8 @@ export class ChatService {
     private datasource: DataSource
   ) {}
 
-  async createChat(sendChatDto: SendChatDto, user: User) {
-    const answer = await getClovaAnswer(sendChatDto.message);
+  async createChat(sendChatDto: SendChatDto, user: User, answer: string) {
+    // const answer = await getClovaAnswer(sendChatDto.message);
     const chat = new Chat();
     chat.chatRoomSeq = sendChatDto.chatRoomSeq;
     chat.question = sendChatDto.message;
@@ -57,12 +57,22 @@ export class ChatService {
     return openChatRoom;
   }
 
-  getClosedChat(userSeq: number) {
-    return this.chatRoomRepository
+  async getClosedChat(userSeq: number) {
+    const result = [];
+
+    const closedChatRoom = await this.chatRoomRepository
       .createQueryBuilder('chatRoom')
+      .leftJoinAndSelect('chatRoom.chats', 'chats')
       .where('chatRoom.userSeq = :userSeq', { userSeq })
       .andWhere('chatRoom.status = "CLOSED"')
+      .orderBy('chatRoom.seq', 'DESC')
+      .addOrderBy('chats.seq', 'ASC')
+      .limit(10)
       .getMany();
+    for (const chatRoom of closedChatRoom) {
+      result.push({ seq: chatRoom.seq, createdAt: chatRoom.createdAt, summary: chatRoom.chats[0].question });
+    }
+    return result;
   }
 
   getChatRoomDetail(seq: number) {
