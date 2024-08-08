@@ -13,10 +13,10 @@ export class Chat extends BaseEntity {
   @Column({ type: 'varchar', name: 'question' })
   question: string;
 
-  @Column({ type: 'varchar', name: 'answer' })
+  @Column({ type: 'text', name: 'answer' })
   answer: string;
 
-  @ManyToOne(() => Chat)
+  @ManyToOne(() => ChatRoom, chatRoom => chatRoom.chats)
   @JoinColumn([{ name: 'chat_room_seq' }])
   chatRoom: ChatRoom;
 }

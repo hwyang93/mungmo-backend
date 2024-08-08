@@ -15,6 +15,6 @@ export class ChatRoom extends BaseEntity {
   @JoinColumn([{ name: 'user_seq' }])
   user: User;
 
-  @OneToMany(() => Chat, Chat => Chat.chatRoom)
+  @OneToMany(() => Chat, chat => chat.chatRoom)
   chats: Chat[];
 }
